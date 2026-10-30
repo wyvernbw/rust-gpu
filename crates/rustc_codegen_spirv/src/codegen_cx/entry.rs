@@ -856,6 +856,20 @@ impl<'tcx> CodegenCx<'tcx> {
             assign_location(var_id, Some(location.value));
             decoration_supersedes_location = true;
         }
+        if let Some(index) = attrs.index {
+            if attrs.location.is_some() {
+                self.emit_global().decorate(
+                    var_id.unwrap(),
+                    Decoration::Index,
+                    [Operand::LiteralBit32(index.value)],
+                );
+            } else {
+                self.tcx.dcx().span_fatal(
+                    index.span,
+                    "`#[spirv(index = ...)]` cannot be used without `#[spirv(location = ...)]`",
+                );
+            }
+        }
         if let Some(flat) = attrs.flat {
             if let Err(SpecConstant { .. }) = storage_class {
                 self.tcx.dcx().span_fatal(
