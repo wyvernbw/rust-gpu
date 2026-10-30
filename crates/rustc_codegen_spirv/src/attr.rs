@@ -96,6 +96,7 @@ pub enum SpirvAttribute {
     DescriptorSet(u32),
     Binding(u32),
     Location(u32),
+    Index(u32),
     Flat,
     PerPrimitiveExt,
     Invariant,
@@ -133,6 +134,7 @@ pub struct AggregatedSpirvAttributes {
     pub descriptor_set: Option<Spanned<u32>>,
     pub binding: Option<Spanned<u32>>,
     pub location: Option<Spanned<u32>>,
+    pub index: Option<Spanned<u32>>,
     pub flat: Option<Spanned<()>>,
     pub invariant: Option<Spanned<()>>,
     pub per_primitive_ext: Option<Spanned<()>>,
@@ -223,6 +225,7 @@ impl AggregatedSpirvAttributes {
             ),
             Binding(value) => try_insert(&mut self.binding, value, span, "#[spirv(binding)]"),
             Location(value) => try_insert(&mut self.location, value, span, "#[spirv(location)]"),
+            Index(value) => try_insert(&mut self.index, value, span, "#[spirv(index)]"),
             Flat => try_insert(&mut self.flat, (), span, "#[spirv(flat)]"),
             Invariant => try_insert(&mut self.invariant, (), span, "#[spirv(invariant)]"),
             PerPrimitiveExt => try_insert(
@@ -331,6 +334,7 @@ impl CheckSpirvAttrVisitor<'_> {
                 | SpirvAttribute::DescriptorSet(_)
                 | SpirvAttribute::Binding(_)
                 | SpirvAttribute::Location(_)
+                | SpirvAttribute::Index(_)
                 | SpirvAttribute::Flat
                 | SpirvAttribute::Invariant
                 | SpirvAttribute::PerPrimitiveExt
