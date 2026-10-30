@@ -639,6 +639,8 @@ fn parse_spirv_attr<'a>(
                 SpirvAttribute::Binding(parse_attr_int_value(arg)?)
             } else if arg.has_name(sym.location) {
                 SpirvAttribute::Location(parse_attr_int_value(arg)?)
+            } else if arg.has_name(sym.index) {
+                SpirvAttribute::Index(parse_attr_int_value(arg)?)
             } else if arg.has_name(sym.input_attachment_index) {
                 SpirvAttribute::InputAttachmentIndex(parse_attr_int_value(arg)?)
             } else if arg.has_name(sym.spec_constant) {
